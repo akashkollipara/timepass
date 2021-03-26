@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Create a list node with 1 data and 1 next pointer */
 struct Node
 {
 	int data;
@@ -8,6 +9,13 @@ struct Node
 	
 } typedef node;
 
+/*
+ * addEntry: This function adds entry to the list and
+ *	     creates addtional nodes.
+ *
+ * @root - pointer to pointer of list
+ * @data - data to be entered in list
+ */
 void addEntry(node **root, int data)
 {
 	node *new = (node *)malloc(sizeof(node));
@@ -26,6 +34,11 @@ void addEntry(node **root, int data)
 	return;
 }
 
+/*
+ * deleteEntry - free the memory of the node.
+ *
+ * @root - pointer to pointer of list
+ */
 void deleteEntry(node **root)
 {
 	node *temp = (*root)->next;
@@ -35,6 +48,11 @@ void deleteEntry(node **root)
 	return;
 }
 
+/*
+ * freeList - Frees allocated memory of the full list.
+ *
+ * @root - pointer to pointer of list
+ */
 void freeList(node **root)
 {
 	while(*root)
@@ -42,6 +60,12 @@ void freeList(node **root)
 	return;
 }
 
+/*
+ * listSort - Uses bubble sort algorithm to sort a linked list
+ *	      in ascending order.
+ *
+ * @root - pointer to pointer of list
+ */
 void listSort(node **root)
 {
 	node *temp, *temp1;
@@ -64,7 +88,20 @@ void listSort(node **root)
 	}
 }
 
-
+/*
+ * mergeSort - This function uses recurssion to sort the
+ *	       linked lists and uses existing nodes of input
+ *	       lists to create one merged list.
+ * Note	     - This function doesn't maintain integrity of the
+ *	       the input lists, but runs faster than below
+ *	       algorithm. User need not free memory of input
+ *	       lists.
+ *
+ * @a - Pointer of list
+ * @b - Pointer of list
+ * @return - pointer of the merged and sorted list
+ */
+#if 0
 node* mergeSort(node *a, node *b)
 {
 	node *ret = NULL;
@@ -85,8 +122,23 @@ node* mergeSort(node *a, node *b)
 	}
 	return ret;
 }
+#endif
 
-node* mergeSort1(node *a, node *b)
+/*
+ * mergeSort - This function uses recurssion to sort the
+ *	       linked lists. It allocates memory for every
+ *	       node entry.
+ * Note	     - This function is relatively slower than above
+ *	       switched off function. User should ensure that
+ *	       they free memory of input lists also at the
+ *	       exit of the program.
+ *
+ * @a - Pointer of list
+ * @b - Pointer of list
+ * @return - pointer of the merged and sorted list
+ */
+#if 1
+node* mergeSort(node *a, node *b)
 {
 	node *ret = (node *) malloc(sizeof(node));
 	if(a == NULL)
@@ -105,16 +157,22 @@ node* mergeSort1(node *a, node *b)
 	if(a->data <= b->data)
 	{
 		ret->data = a->data;
-		ret->next = mergeSort1(a->next, b);
+		ret->next = mergeSort(a->next, b);
 	}
 	else
 	{
 		ret->data = b->data;
-		ret->next = mergeSort1(a, b->next);
+		ret->next = mergeSort(a, b->next);
 	}
 	return ret;
 }
+#endif
 
+/*
+ * printList - Prints list on console.
+ *
+ * @root - Pointer of the list
+ */
 void printList(node *root)
 {
 	while(root != NULL)
@@ -131,7 +189,11 @@ int main()
 	node *r = NULL;
 	node *q = NULL;
 	node *s = NULL;
+	/* Create Linked list r */
 	addEntry(&r, 13);
+	addEntry(&r, 19);
+	addEntry(&r, 31);
+	addEntry(&r, 200);
 	addEntry(&r, 5);
 	addEntry(&r, 3);
 	addEntry(&r, 9);
@@ -139,22 +201,33 @@ int main()
 	addEntry(&r, 11);
 	printf("List r: ");
 	printList(r);
+	/* Create linked list q  */
 	addEntry(&q, 12);
 	addEntry(&q, 4);
+	addEntry(&q, 2001);
+	addEntry(&q, 2021);
 	addEntry(&q, 2);
 	addEntry(&q, 8);
 	addEntry(&q, 6);
 	addEntry(&q, 10);
 	printf("List q: ");
 	printList(q);
+	/*
+	 * Sort linked lists, This creates
+	 * Pre-sorted lists
+	 */
 	listSort(&r);
 	listSort(&q);
-	s = mergeSort1(r, q);
+	/* MergeSort lists */
+	s = mergeSort(r, q);
+
 	printf("List s: ");
 	printList(s);
+	/* Free memory used by 3 lists */
 	freeList(&r);
 	freeList(&q);
 	freeList(&s);
+
 	return 0;
 }
 
