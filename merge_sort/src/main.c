@@ -64,6 +64,7 @@ void listSort(node **root)
 	}
 }
 
+
 node* mergeSort(node *a, node *b)
 {
 	node *ret = NULL;
@@ -81,6 +82,35 @@ node* mergeSort(node *a, node *b)
 	{
 		ret = b;
 		ret->next = mergeSort(a, b->next);
+	}
+	return ret;
+}
+
+node* mergeSort1(node *a, node *b)
+{
+	node *ret = (node *) malloc(sizeof(node));
+	if(a == NULL)
+	{
+		ret->data = b->data;
+		ret->next = b->next;
+		return ret;
+	}
+	else if(b == NULL)
+	{
+		ret->data = a->data;
+		ret->next = a->next;
+		return ret;
+	}
+
+	if(a->data <= b->data)
+	{
+		ret->data = a->data;
+		ret->next = mergeSort1(a->next, b);
+	}
+	else
+	{
+		ret->data = b->data;
+		ret->next = mergeSort1(a, b->next);
 	}
 	return ret;
 }
@@ -119,9 +149,11 @@ int main()
 	printList(q);
 	listSort(&r);
 	listSort(&q);
-	s = mergeSort(r, q);
+	s = mergeSort1(r, q);
 	printf("List s: ");
 	printList(s);
+	freeList(&r);
+	freeList(&q);
 	freeList(&s);
 	return 0;
 }
