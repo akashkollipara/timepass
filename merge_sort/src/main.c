@@ -18,6 +18,11 @@ struct Node
 void addEntry(node **root, int data)
 {
 	node *new = (node *)malloc(sizeof(node));
+	if(!new)
+	{
+		printf("Failed to allocate memory!\n");
+		return;
+	}
 	node *trace;
 	new->data = data;
 	new->next = NULL;
@@ -140,6 +145,11 @@ node* mergeSort(node *a, node *b)
 node* mergeSort(node *a, node *b)
 {
 	node *ret = (node *) malloc(sizeof(node));
+	if(!ret)
+	{
+		printf("Failed to allocate memory!\n");
+		return NULL;
+	}
 	if(a == NULL)
 	{
 		ret->data = b->data;
