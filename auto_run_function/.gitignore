@@ -1,9 +1,0 @@
-*.o
-*.a
-*.elf
-out/
-*.lst
-*.swp
-*.temp
-*.tmp
-
