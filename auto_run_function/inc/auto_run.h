@@ -9,8 +9,8 @@ typedef struct function
 {
 	char *name;
 	fn_ops_t *ops;
-	unsigned long start_rank;
-	unsigned long exit_rank;
+	size_t start_rank;
+	size_t exit_rank;
 } func_t;
 
 #define FUNCTION_EXPORT(_name,_ops,_srank,_erank)			\
