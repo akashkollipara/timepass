@@ -2,21 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Playfair matrix
+ * This is 5x5 matrix, but storing it on 1d (linear)
+ * make the algorithm more efficient
+ */
 char playfair_matrix[25];
 
+/* This function populates the matrix according
+ * to plafair rule
+ */
 static int populate_matrix(char ip)
 {
 	static unsigned int x = 0;
 	for(int i = 0; i < x; i++)
 	{
+		/* Check if the matrix has the element */
 		if(playfair_matrix[i] == ip)
 			return 1;
 	}
 	playfair_matrix[x] = ip;
+	/* Rollover condition which is not necessary but its good to have */
 	x = x < 24 ? (x + 1) : 0;
 	return 0;
 }
 
+/* This function prints the matrix */
 void disp_playfair_matrix()
 {
 	int i = 0;
@@ -36,6 +46,9 @@ void disp_playfair_matrix()
 	printf("\b \n");
 }
 
+/* This function generates the matrix
+ * from the given key input.
+ */
 static void generate_matrix(char *ip)
 {
 	char a, i;
@@ -56,10 +69,15 @@ static void generate_matrix(char *ip)
 	disp_playfair_matrix();
 }
 
+/* This function is splits the input string to
+ * digrams as per playfair rule
+ */
 static void split_digrams(char *ip, char *op, int size, int *index)
 {
 	int local_index = *index;
+	/* Safety check to prevent accessing invalid memory */
 	if(local_index > 2)
+		/* Check if there are repeated chars */
 		if(ip[local_index-1] == ip[local_index-2])
 		{
 			local_index--;
@@ -69,11 +87,16 @@ static void split_digrams(char *ip, char *op, int size, int *index)
 	op[0] = ip[local_index];
 
 	if(size > local_index+1)
+		/* If the two current chars are same the replace second with x */
 		op[1] = ip[local_index] == ip[local_index+1] ? 'x' : ip[local_index+1];
 	else
+		/* Boundry case where digram could not be formed */
 		op[1] = 'x';
 }
 
+/* This function returns xy co-ordinates
+ * of element from the playfair matrix
+ */
 void get_xy_from_char(char ip, int *xy)
 {
 	int i;
@@ -85,11 +108,15 @@ void get_xy_from_char(char ip, int *xy)
 	xy[1] = i%5;
 }
 
+/* This function returns char from the xy location*/
 void get_char_from_xy(int *xy, char *op)
 {
 	*op = playfair_matrix[((xy[0]*5)+xy[1])];
 }
 
+/* This function uses playfair encryption 
+ * algorithm to cypher input data
+ */
 void playfair_encrypt(char *dg, char *op)
 {
 	int xy1[2];
@@ -123,6 +150,9 @@ void playfair_encrypt(char *dg, char *op)
 	get_char_from_xy(xy2, &op[1]);
 }
 
+/* This function uses playfair decypher algorithm
+ * to extract information
+ */
 void playfair_decrypt(char *dg, char *op)
 {
 	int xy1[2];
