@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <sll.h>
 
 int main()
@@ -7,8 +8,14 @@ int main()
 	addNode(&root, 5);
 	addNode(&root, 6);
 	addNode(&root, 4);
+	addNode(&root, 1);
+	printf("Original List: ");
 	printList(root);
 	bubbleSort(root);
+	printf("Sorted List: ");
+	printList(root);
+	reverseList(&root);
+	printf("Reversed List: ");
 	printList(root);
 	freeList(root);
 	return 0;

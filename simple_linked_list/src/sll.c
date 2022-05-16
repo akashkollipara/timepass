@@ -6,8 +6,7 @@ void addNode(node_t **head, int data)
 {
 	node_t *n = (node_t *) malloc(sizeof(node_t));
 	n->data = data;
-	if(head != NULL)
-		n->n = *head;
+	n->n = *head;
 	*head = n;
 	return;
 }
@@ -21,6 +20,20 @@ void freeList(node_t *head)
 		temp1 = temp->n;
 		free(temp);
 		temp = temp1;
+	}
+}
+
+void reverseList(node_t **head)
+{
+	node_t *temp = (node_t *) 0;
+	node_t *p = *head;
+	while(p)
+	{
+		p = p->n;
+		(*head)->n = temp;
+		temp = *head;
+		if(p)
+			*head = p;
 	}
 }
 
