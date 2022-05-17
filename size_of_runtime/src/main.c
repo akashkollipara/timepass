@@ -1,17 +1,16 @@
 #include <stdio.h>
 
-#define size_of(x, size)	void *temp##x;		\
-				temp##x = (x);		\
-				(size) = (unsigned)((size_t)(++(x)) - (size_t)temp##x);
+#define size_of(x)	(size_t)((void *)(&x+1) - (void *)(&x))
+
 
 int main()
 {
-	int *c, size;
+	int c, size;
 	c = 0x00;
-	size_of(c, size);
+	size = size_of(c);
 	printf("%d\n", size);
-	char *b;
+	char b;
 	b = 0x00;
-	size_of(b, size);
+	size = size_of(b);
 	printf("%d\n", size);
 }

@@ -1,7 +1,7 @@
 default:
 	make all -j4
 
-CFLAGS	:= -Werror -Wall -I inc/
+CFLAGS	:=  -Wall -I inc/
 
 all: main.elf
 
